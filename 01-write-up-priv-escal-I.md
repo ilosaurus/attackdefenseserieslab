@@ -18,4 +18,27 @@ Command: `sudo -l`
 **Step 2**:  Check the listening sockets on the machine.  
 Command: `netstat -tlpn`  
 
-![02](files/img/02.jpg)
+![02](files/img/02.jpg)  
+
+**Step 3**:  It is mentioned in the challenge statement that Docker daemon is listening on TCP port. Port 22 belongs to the SSH server so the Docker socket is running on TCP port 2375. Set **DOCKER HOST** variable  
+Command: `export DOCKER_HOST=localhost:2375`
+  
+![03](files/img/03.jpg)  
+  
+**Step 4**:​ List the containers running on the host.  
+Command:​ `docker ps`  
+  
+![04](files/img/04.jpg) 
+  
+**Step 5**:​ Open another terminal (T2) and run tail on audit.log file. Also apply a filter to only viewapparmor logs.  
+Command:​ `sudo /usr/bin/tail -f /var/log/audit/audit.log | grep apparmor`  
+  
+![05](files/img/05.jpg)  
+  
+**Step 6**:​ After trying to perform various operations on the docker, eventually it will be clear thatonly exec command is allowed by custom docker firewall. So, exec into the running container.  
+Command:​ `docker exec -it 1664c45a8ada bash`  
+  
+![06](files/img/06.jpg)  
+
+
+
