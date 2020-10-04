@@ -41,4 +41,29 @@ Command:​ `docker exec -it 1664c45a8ada bash`
 ![06](files/img/06.jpg)  
 
 
+**Step 7**:​ Check the capabilities granted to the Docker container.  
+Command:​ `capsh --print`  
+  
+![07](files/img/07.jpg)  
+  
+The container has multiple capabilities but mainly also has **SYS_ADMIN** capability that allowsthe user to perform multiple privileged operations.  
+  
+**Step 8**:​ Check the storage devices (disks) available on this machine.  
+Command:​ `fdisk -l`  
 
+![08](files/img/08.jpg)
+    
+One can observe that a disk of the host is attached to the container and is mounted at `/dev/sda`.  
+
+**Step 9**:​ Try to mount it on /tmp directory.  
+Command:​ `mount /dev/sda  /tmp/`  
+
+![09](files/img/09.jpg)   
+  
+The attempt failed. As the container had the capability to perform this action, this is highly likelythat the apparmor has blocked this action.  
+
+**Step 10​**: Check the logs appearing from `audit.log` file in terminal T2.  
+
+![10](files/img/10.jpg)   
+
+It is clear from the logs that apparmor has denied the mount operation for `docker` profile.
