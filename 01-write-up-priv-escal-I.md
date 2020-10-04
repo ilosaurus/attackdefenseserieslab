@@ -66,4 +66,45 @@ The attempt failed. As the container had the capability to perform this action, 
 
 ![10](files/img/10.jpg)   
 
-It is clear from the logs that apparmor has denied the mount operation for `docker` profile.
+It is clear from the logs that apparmor has denied the mount operation for `docker` profile.  
+
+**Step 11**:​ Change to apparmor profile directory and open the docker profile file using vim.  
+Commands:  
+```
+cd /etc/apparmor.d/
+sudo vim docker
+```  
+![11](files/img/11.jpg)   
+  
+In the profile file, the mount operation is denied.  
+
+![11b](files/img/11b.jpg)   
+
+Remove the `deny` string from the line. So, after modification the profile should appear asshown in the screenshot below :  
+
+![11c](files/img/11c.jpg)   
+
+**Step 12**:​ Reload the apparmor profile.  
+Command:​ `sudo apparmor_parser -r docker`  
+
+![12](files/img/12.jpg)   
+  
+**Step 13**:​ Now try to mount the disk again.  
+Command:​ `mount /dev/sda /tmp/`  
+
+![13](files/img/13.jpg)   
+  
+This time the operation succeeded.  
+
+**Step 14**:​ Retrieve the flag from the home directory of the root user.  
+Command: `​cat /tmp/root/flag`  
+
+![14](files/img/14.jpg)   
+
+Flag: `​a9a9bd74ce2bdb3ca85d44a9c0ed776a` 
+
+References:  
+● AppArmor man page(​http://manpages.ubuntu.com/manpages/bionic/man7/apparmor.7.html​)(​http://manpages.ubuntu.com/manpages/bionic/man5/apparmor.d.5.html​)  
+  
+● Beginning AppArmor profile development(​https://ubuntu.com/tutorials/beginning-apparmor-profile-development​)  
+ 
